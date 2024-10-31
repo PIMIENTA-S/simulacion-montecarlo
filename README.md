@@ -38,10 +38,10 @@ Para ejecutar este simulador, asegúrate de tener Python instalado y sigue estos
 
 ```bash
 # Clona este repositorio
-git clone https://github.com/tuusuario/risk-simulador.git
+git clone https://github.com/PIMIENTA-S/simulacion-montecarlo.git
 
 # Entra al directorio del proyecto
-cd risk-simulador
+cd simulacion-montecarlo
 
 # Instala los requerimientos
 pip install -r requirements.txt
