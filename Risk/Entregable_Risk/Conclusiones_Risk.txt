@@ -1,0 +1,30 @@
+Escriba el numero de batallas a simular: 100
+La proporción en la cual el atacante gana es:  0.36     
+La proporción en la cual el defensor gana es:  0.64  
+
+----------------------------------------------------------------
+
+Escriba el numero de batallas a simular: 1000
+La proporción en la cual el atacante gana es:  0.34
+La proporción en la cual el defensor gana es:  0.6599999999999999
+
+----------------------------------------------------------------
+
+Escriba el numero de batallas a simular: 10000
+La proporción en la cual el atacante gana es:  0.3697
+La proporción en la cual el defensor gana es:  0.6303000000000001
+
+
+Teniendo en cuenta el resultado de las iteraciones, se cumple la proporcion 1/3 debido
+a las reglas del juego, podemos resumir esto en 3 casos:
+Caso 1:
+Gana ambos enfrentamientos la defensa 
+
+Caso 2:
+Gana ambos enfrentamientos el atacante
+
+Caso 3:
+Una victoria para cada parte, lo cual significa la victoria para la defensa
+
+En síntesis de estos 3 casos 2 los gana la defensa, por consecuencia la probalidad de ganar 
+la defensa es mucho mayor.
