@@ -29,7 +29,7 @@ def main():
   # max = y(demanda) * pu(4.5) - x * cu(result())
   y = resul()
   pu = 4.5
-  x = int(input())
+  x = int(input("Ingrese el numero de almanaques a comprar: "))
   while y > x:
     y = resul()
   ra = r.random()
