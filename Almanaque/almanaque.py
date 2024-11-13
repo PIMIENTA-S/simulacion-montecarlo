@@ -1,6 +1,7 @@
 import random as r
+import numpy as np
 
-def resul():
+def demanda():
   vendido = 0
   cara = r.random()
   if cara <= 0.3:
@@ -26,22 +27,35 @@ def valorEsperado():
 # Varianza = E[x**2] - (E[x])**2
 
 def main():
-  # max = y(demanda) * pu(4.5) - x * cu(result())
-  y = resul()
-  pu = 4.5
-  x = int(input("Ingrese el numero de almanaques a comprar: "))
-  while y > x:
-    y = resul()
-  ra = r.random()
-  cu = (((2-1.5)*ra)+1.5)
+  simulado = demanda()
+  # x = int(input("Ingrese el numero de almanaques a comprar: "))
+  cantidad_importar = 100
+  while simulado > cantidad_importar:
+    simulado = demanda()
+  precio_simulado = (0.5 * r.random())+1.5
+  no_vendidos = cantidad_importar - simulado
+  utilidad_unitaria = 4.5 - precio_simulado
 
-  max = y*pu - x*cu
-  netas = (y*4.5 + ((x-y)*0.75)) - x*cu
-  print("Utilidad maxima:", (y*4.5 + ((x-y)*0.75)))
-  print("Inversion:", x*cu)
-  print("Ganancias netas:", netas)
-  print("Almanaques vendidos:", y)
-  print("Costo unitario:", cu)
+  utilidad_maxima = utilidad_unitaria * cantidad_importar + no_vendidos * 0.75
+
+  return utilidad_maxima
+
+
+utilidad_100 = []
+
+for i in range(10000):
+  m = main()
+  utilidad_100.append(m)
+
+desviacion_estandar = np.std(utilidad_100)
+print('Desviación estandar', desviacion_estandar)
+
+
+
+
+
+
+
 
 
 main()
