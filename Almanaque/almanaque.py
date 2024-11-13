@@ -41,22 +41,31 @@ def main():
   return utilidad_maxima
 
 
-utilidad_100 = []
+utilidad_all = []
 
-for i in range(10000):
-  m = main()
-  utilidad_100.append(m)
+for i in almanaqueVendido:
+  print(i)
+  lista_utilidades = []
+  for j in range(10000):
+      m = main()
+      lista_utilidades.append(m)
+  media = np.std(lista_utilidades)
+  utilidad_all.append(media)
 
-desviacion_estandar = np.std(utilidad_100)
-print('Desviación estandar', desviacion_estandar)
+# for i in range(10000):
+
+for i in utilidad_all:
+  print(i)
+
+# desviacion_estandar = np.std(utilidad_100)
+# intervalo_confianza = (1.96 * desviacion_estandar)/np.sqrt(10000)
+# print('Desviación estandar', desviacion_estandar)
+# print('Media:', media)
+
+
+# print(f"Intervalo de confianza {media} +/- {intervalo_confianza}")
 
 
 
-
-
-
-
-
-
-main()
-
+# n = ((1.96**2) * (desviacion_estandar ** 2) ) / 100
+# print('Ensayos requeridos', n)
