@@ -1,46 +1,54 @@
 import numpy as np
 
-# Parámetros del problema
-costos = [1.5, 2.0]  # Rango de costos posibles por almanaque
-precio_venta = 4.5
-reembolso = 0.75
-probabilidades = [0.3, 0.2, 0.3, 0.15, 0.05]
-demandas = [100, 150, 200, 250, 300]
-m = 10000  # Número de simulaciones para cada nivel de pedido
+# Configuración de valores de venta y probabilidades de demanda
+almanaqueVendido = [100, 150, 200, 250, 300]
+probabilidadVenta = [0.3, 0.2, 0.3, 0.15, 0.05]
 
-def calcular_ganancias(encargo, costo):
-    ganancias = []
-    for _ in range(m):
-        # Simulamos la demanda de acuerdo con la distribución de probabilidades
-        demanda = np.random.choice(demandas, p=probabilidades)
-        
-        # Calcular ganancia según la demanda y el pedido
-        if demanda <= encargo:
-            # Sobrante, entonces venderemos solo la demanda y devolveremos el sobrante
-            ingreso_ventas = demanda * precio_venta
-            costo_total = encargo * costo
-            reembolso_total = (encargo - demanda) * reembolso
-            ganancia = ingreso_ventas - costo_total + reembolso_total
-        else:
-            # Vendemos todo lo que encargamos
-            ingreso_ventas = encargo * precio_venta
-            costo_total = encargo * costo
-            ganancia = ingreso_ventas - costo_total
+def demanda():
+    # Elegimos un valor de ventas basado en las probabilidades acumulativas
+    return np.random.choice(almanaqueVendido, p=probabilidadVenta)
 
-        ganancias.append(ganancia)
+def calcularN(sigma):
+    return ((1.96**2) * (sigma ** 2)) / 100
+
+def main(n):
+    # Generar precio y calcular demanda
+    simulado = demanda()
+    precio_simulado = 1.5 + (0.5 * np.random.random())
     
-    return np.mean(ganancias)  # Ganancia promedio para este nivel de encargo
+    # Ajustar la cantidad de demanda simulada si excede la cantidad importada
+    simulado = min(simulado, n)
+    no_vendidos = n - simulado
 
-# Probar diferentes niveles de encargo y costos
-resultados = {}
-for encargo in range(100, 350, 50):  # Niveles de encargo de 100 a 300
-    for costo in costos:
-        ganancia_promedio = calcular_ganancias(encargo, costo)
-        resultados[(encargo, costo)] = ganancia_promedio
+    # Calcular la utilidad máxima
+    utilidad_maxima = (4.5 * simulado + no_vendidos * 0.75) - precio_simulado * n
+    return utilidad_maxima
 
-# Encontrar el mejor pedido en términos de ganancia promedio
-mejor_encargo = max(resultados, key=resultados.get)
-mejor_ganancia = resultados[mejor_encargo]
+def main_section(n):
+    # Simulación de utilidades
+    utilidades = [main(n) for _ in range(10000)]
+    desviacion_muestral = np.std(utilidades)
+    n_optimo = calcularN(desviacion_muestral)
+    print(f"Desviación estándar con un importe de {n} en muestra de 10000: {desviacion_muestral}")
+    print(f"Con dicha desviación se calcula la cantidad óptima (N): {int(n_optimo)}")
+    return int(n_optimo)
 
-print(f"Mejor encargo: {mejor_encargo[0]} almanaques a un costo de ${mejor_encargo[1]} por unidad")
-print(f"Ganancia promedio esperada: ${mejor_ganancia:.2f}")
+def intervalo_confianza(mean, sigma, n):
+    margen_error = 1.96 * (sigma / np.sqrt(n))
+    return [int(mean - margen_error), int(mean + margen_error)]
+
+def master():
+    for n in almanaqueVendido:
+        n_ideal = main_section(n)
+        
+        # Calcular utilidad ideal y sus estadísticas
+        utilidades_ideales = [main(n) for _ in range(n_ideal)]
+        desviacion_ideal = np.std(utilidades_ideales)
+        media_ideal_ganancias = np.mean(utilidades_ideales)
+        confianza = intervalo_confianza(media_ideal_ganancias, desviacion_ideal, n_ideal)
+        
+        print(f"Desviación ideal: {desviacion_ideal}")
+        print(f"Media ideal (X): {media_ideal_ganancias}")
+        print(f"Con un intervalo de confianza de {confianza}\n")
+
+master()
