@@ -38,75 +38,37 @@ def main(n):
   return utilidad_maxima
 
 
-def main_secction(n):
+def main_section(n):
   utilidad = []
   for i in range(10000):
     ganancia = main(n)
     utilidad.append(ganancia)
   desviacion_muestral = np.std(utilidad)
-  print(f"Desviacion estandar con un importe {n} en muestra de 10000: {desviacion_muestral}")
+  print(f"Desviacion estandar con un importe de {n} en muestra de 10000: {desviacion_muestral}")
   n = calcularN(desviacion_muestral)
+  print(f"Con dicha desviación se calcula la cantidad optima(N): {int(n)}")
   return int(n)
 
 
+def intervalo_confianza(mean, sigma, n):
+  limite_1 = mean + (1.96*(sigma/np.sqrt(n)))
+  limite_2 = mean - (1.96*(sigma/np.sqrt(n)))
+
+  return [int(limite_2), int(limite_1)]
+
+
+
 def master():
-  # ideal = [main_secction(100), main_secction(150), main_secction(200), main_secction(250), main_secction(300) ]
   for i in almanaqueVendido:
-    ideal = main_secction(i)
+    ideal = main_section(i)
     utilidad_ideal = []
     for j in range(ideal):
       utilidad_ideal.append(main(i))
     desviacion_ideal = np.std(utilidad_ideal)
     media_ideal_ganancias = np.mean(utilidad_ideal)
-    print(f"Desviacion_ideal: {desviacion_ideal} \nMedia ideal (X): {media_ideal_ganancias}\n")
+    confianza = intervalo_confianza(media_ideal_ganancias, desviacion_ideal, ideal)
+    print(f"Desviacion_ideal: {desviacion_ideal} \nMedia ideal (X): {media_ideal_ganancias}")
+    print(f"Con un intervalo de confianza de {confianza}\n")
     utilidad_ideal = []
 
-
-
 master()
-
-# iteracion_ideal = main_secction(250)
-
-# print(iteracion_ideal)
-# utilidad_ideal = []
-# for i in range(int(iteracion_ideal)):
-#   utilidad_ideal.append(main(250))
-
-# print(np.std(utilidad_ideal))
-
-
-
-
-
-
-
-
-
-# utilidad_all = []
-
-# for i in almanaqueVendido:
-#   lista_utilidades = []
-#   for j in range(10000):
-#       m = main(i)
-#       lista_utilidades.append(m)
-
-#   sigma = np.std(lista_utilidades)
-#   utilidad_all.append(sigma)
-
-
-# for i in utilidad_all:
-#   print(calcularN(i))
-
-
-
-
-
-
-# desviacion_estandar = np.std(utilidad_all)
-# intervalo_confianza = (1.96 * desviacion_estandar)/np.sqrt(10000)
-# print('Desviación estandar', desviacion_estandar)
-# print('Media:', media)
-
-
-# print(f"Intervalo de confianza {media} +/- {intervalo_confianza}")
-# print('Ensayos requeridos', n)
