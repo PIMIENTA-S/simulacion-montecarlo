@@ -1,4 +1,3 @@
-# simulacion-montecarlo
 
 # Simulador de Combate de Risk
 
