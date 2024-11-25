@@ -5,7 +5,7 @@ import numpy as np
 from scipy.stats import norm
 import matplotlib.pyplot as plt
 
-#Practica 3
+#Practica 3 (archivo Daniel)
 
 def triangular(ei,moda,ed):
   a=ei
