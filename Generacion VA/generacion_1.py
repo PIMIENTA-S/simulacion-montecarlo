@@ -15,3 +15,5 @@ for i in range(ite):
 mayor_3_4 = sum([1 for c in circunferencias if c > 3.4])/ite    # 4% aprox
 
 desecho = sum([1 for c in circunferencias if c > 3.5 or c < 3.3])/ite    # 90% apro
+
+print(mayor_3_4, desecho)
