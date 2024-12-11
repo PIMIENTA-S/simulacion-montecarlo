@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as py
+import matplotlib.pyplot as plt
 
 archivo = 'Prueba_Aleatoriedad/loteriaBOG.csv'
 
@@ -30,8 +31,15 @@ valor_critico = 3.8415
 
 
 print()
-print(estadistico)
-print(f'Numero Impar: {oi_1}, Numero par: {oi_2}')
+print("---------------------Punto 1--------------------------")
+print("Teniendo en cuenta:")
+print(f"Estadistico de prueba: {estadistico:.2f}\nValor Critico: {valor_critico:.2f}")
+if estadistico < valor_critico:
+    print("Se acepta H0: La cantidad de pares e impares es igual.")
+else:
+    print("Se rechaza H0: La cantidad de pares e impares no es igual.")
+
+# print(f'Numero Impar: {oi_1}, Numero par: {oi_2}')
 
 
 
@@ -81,12 +89,20 @@ def chiCuadrado(ois):
 
 # Ho = los datos se distribuyen uniformemente
 # H1 = lo contrario
+estadistico_2 = chiCuadrado(ois)
+valor_critico_2 = 16.9190
+print()
+print("---------------------Punto 2--------------------------")
 
-# 16.9190
+print("Teniendo en cuenta:")
+print(f"Estadistico de prueba: {estadistico_2:.2f}\nValor Critico: {valor_critico_2:.2f}")
 
 # Como el estadistico es menor al valor critico, se acepta la Ho
+if estadistico_2 < valor_critico_2:
+    print("Se acepta H0: Los datos se distribuyen uniformemente")
+else:
+    print("Se rechaza H0: Los datos no se distribuyen uniformemente")
 
-print(chiCuadrado(ois))
 
 
 # -------------------------punto 3-------------------------------
@@ -114,11 +130,18 @@ ua = (2*len(lista_datos)-1)/3
 varianza = (16*len(lista_datos)-29)/90
 a = ascendente + descendente
 z = (a-ua)/((varianza)**0.5)
+valor_critico_3 = 3.841
 
+print()
+print("---------------------Punto 3--------------------------")
+print("Teniendo en cuenta:")
+print(f"Estadistico de prueba: {z:.2f}\nValor Critico: {valor_critico_3:.2f}")
 
+if z <= valor_critico_3:
+    print("Se acepta H0: Las observaciones sucesivas son independientes.")
+else:
+    print("Se rechaza H0: Las observaciones sucesivas no son independientes.")
 
-print(ascendente, descendente)
-print(z)
 
 #--------------------------------punto 4--------------------------------
 
@@ -127,23 +150,58 @@ print(z)
 # H1 = lo contrario
 
 media = py.mean(lista_datos)
-superior_media = 0
-inferior_media = 2216 - superior_media
+n1 = 0
+n2 = 0
 
 racha_1 = True
+
 racha_superior = 1
 racha_inferior = 0
 
+
 for i in range(len(lista_datos)):
   if lista_datos[i] > media:
-    superior_media += 1
+    n1 += 1
     if racha_1!= True:
       racha_superior += 1
       racha_1 = True
     # else:
-  elif lista_datos[i] < lista_datos[i-1]:
+  elif lista_datos[i] < media:
+      n2 += 1
       if racha_1!= False:
         racha_inferior += 1
         racha_1 = False
 
-print(racha_superior, racha_inferior)
+N = 2216
+b = racha_superior + racha_inferior
+
+ub = ((2 * n1 * n2) / N) + (1 / 2)
+sb = ((2 * n1 * n2) * (2 * n1 * n2 - N)) / ((N**2) * (N-1))
+
+Zo = (b - ub)/ py.sqrt(sb)
+
+print()
+print("---------------------Punto 4--------------------------")
+
+print("Teniendo en cuenta:")
+print(f"Estadistico de prueba: {Zo:.2f}\nValor Critico: {valor_critico_3:.2f}")
+
+if Zo <= valor_critico_3:
+    print("Se acepta H0: Los números están distribuidos aleatoriamente por encima y por debajo de la media.")
+else:
+    print("Se rechaza H0: Los números no están distribuidos aleatoriamente.")
+
+# ----------------------Graficas--------------------------------
+# Formar pares consecutivos
+pares = [(lista_datos[i], lista_datos[i + 1]) for i in range(len(lista_datos) - 1)]
+
+# Separar las coordenadas
+x, y = zip(*pares)
+
+# Graficar los puntos
+plt.scatter(x, y, alpha=0.5)
+plt.title("Prueba gráfica (espectral)")
+plt.xlabel("x_j")
+plt.ylabel("x_{j+1}")
+plt.grid(True)
+plt.show()
