@@ -5,15 +5,28 @@ import matplotlib.pyplot as plt
 def genXi():
   a = 0
   b = 4
-  c = 2.5
+  c = 2.6
+
   listaXi = []
   listaCi = []
-  for i in range(1000):
-    u1 = r.random()
-    u2 = r.random()
-    listaXi.append( a + (b - a) * u1)
-    listaCi.append( a + (c - a) * u2)
-  return listaXi, listaCi
+
+  aceptados_x = []
+  aceptados_y = []
+  for i in range(100000):
+    u1 = a + (b - a) * r.random()
+    u2 = a + (c - a) * r.random()
+
+    #Evaluar x en funcion
+    funcion_en_x = funtion(u1)
+    if u2 <= funcion_en_x:
+      aceptados_x.append(u1)
+      aceptados_y.append(u2)
+    else:
+      listaXi.append(u1)
+      listaCi.append(u2)
+
+
+  return listaXi, listaCi, aceptados_x, aceptados_y
 
 
 
@@ -29,17 +42,25 @@ def genFuncion():
   # print(ejeX, ejeY)
   return ejeX, ejeY
 
-
-
+it 
 ejeX, ejeY = genFuncion()
-listaXi, listaCi = genXi()
+listaXi, listaCi, aceptadosX, aceptadosY = genXi()
+
+# Calcular integral
+punto_aceptados = len(aceptadosX)
+
+estimacion = 2.6 * (punto_aceptados/ 100000) * 4
+
+print(estimacion)
+
 
 
 # Graficar
 plt.plot(ejeX, ejeY, label="function(x)")
 
 # Graficar los puntos Xi y Ci
-plt.scatter(listaXi, listaCi, color="red", label="Puntos Xi y Ci", zorder=5)
+plt.scatter(listaXi, listaCi, color="red", label="Puntos rechazados", zorder=5, s=10)
+plt.scatter(aceptadosX, aceptadosY, color="blue", label="Puntos aceptados", zorder=5, s=10)
 
 
 plt.xlabel("x")
